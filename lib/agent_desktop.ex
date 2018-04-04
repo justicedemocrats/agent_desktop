@@ -6,7 +6,8 @@ defmodule AgentDesktop do
 
     children = [
       supervisor(AgentDesktop.Endpoint, []),
-      worker(AgentDesktop.AirtableConfig, [])
+      worker(AgentDesktop.AirtableConfig, []),
+      worker(AgentDesktop.Scheduler, [])
     ]
 
     opts = [strategy: :one_for_one, name: AgentDesktop.Supervisor]

@@ -7,6 +7,8 @@ config :agent_desktop, AgentDesktop.Endpoint,
   server: true
 
 config :agent_desktop,
-  airtable_key: System.get_env("AIRTABLE_KEY"),
-  airtable_base: System.get_env("AIRTABLE_BASE"),
-  airtable_table_name: System.get_env("AIRTABLE_TABLE_NAME")
+  airtable_key: "${AIRTABLE_KEY}",
+  airtable_base: "${AIRTABLE_BASE}",
+  airtable_table_name: "${AIRTABLE_TABLE_NAME}"
+
+config :agent_desktop, secret: "${SECRET}"

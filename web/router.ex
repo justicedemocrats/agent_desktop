@@ -16,5 +16,6 @@ defmodule AgentDesktop.Router do
 
     get("/", PageController, :index)
     get("/:type", PageController, :show)
+    get("/update", PageController, :update)
   end
 end

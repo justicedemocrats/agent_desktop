@@ -40,6 +40,7 @@ defmodule AgentDesktop.Mixfile do
       {:cowboy, "~> 1.0"},
       {:short_maps, "~> 0.1.2"},
       {:httpotion, "~> 3.0.3"},
+      {:quantum, ">= 2.2.1"},
       {:distillery, "~> 1.5.0", runtime: false}
     ]
   end

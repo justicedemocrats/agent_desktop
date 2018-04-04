@@ -37,3 +37,5 @@ config :agent_desktop,
   airtable_key: System.get_env("AIRTABLE_KEY"),
   airtable_base: System.get_env("AIRTABLE_BASE"),
   airtable_table_name: System.get_env("AIRTABLE_TABLE_NAME")
+
+config :agent_desktop, secret: "secret"
