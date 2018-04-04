@@ -15,7 +15,7 @@ defmodule AgentDesktop.Router do
     pipe_through(:browser)
 
     get("/", PageController, :index)
-    get("/:type", PageController, :show)
     get("/update", PageController, :update)
+    get("/:type", PageController, :show)
   end
 end
