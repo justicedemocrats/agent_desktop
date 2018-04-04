@@ -24,7 +24,9 @@ defmodule AgentDesktop.PageController do
   end
 
   def extract_voter(params) do
-    Enum.filter(params, fn {k, _v} -> String.starts_with?(k, "voter_") end)
+    params
+    |> Enum.filter(fn {k, _v} -> String.starts_with?(k, "voter_") end)
+    |> Enum.map(fn {k, v} -> {String.replace(k, "voter_", ""), v} end)
     |> Enum.into(%{})
   end
 
