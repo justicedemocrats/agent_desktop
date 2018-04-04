@@ -2,6 +2,10 @@
   <h1> <%= @script.name %> </h1>
 </div>
 
+<br/>
+<br/>
+<br/>
+
 <div id="top" class="script-section">
   <%= raw(top_contents(@voter, @script.answers)) %>
   <br/>
