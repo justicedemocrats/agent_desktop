@@ -1,0 +1,54 @@
+<div>
+  <h1> <%= @script.name %> </h1>
+</div>
+
+<div id="top" class="script-section">
+  <%= raw(top_contents(@voter, @script.answers)) %>
+  <br/>
+  <%= for answer <- sorted_answers_for("top", @script.answers) do %>
+    <a class="button button-xl script-answer enabled" data-answer="<%= answer[~s(id)] %>">
+      <%= answer["display_name"] %>
+    </a>
+  <% end %>
+</div>
+
+<%= for answer <- non_top_answers(@script.answers) do %>
+  <div id="<%= answer[~s(id)] %>" style="display: none;" class="script-section">
+    <%= raw(answer_contents(@voter, answer)) %>
+
+    <%= for answer <- sorted_answers_for(answer, @script.answers) do %>
+      <a class="button button-xl script-answer" data-answer="<%= answer[~s(id)] %>">
+        <%= answer["display_name"] %>
+      </a>
+    <% end %>
+  </div>
+<% end %>
+
+<script>
+
+function initialize () {
+  Array.from(document.querySelectorAll('a.enabled')).forEach(function (el) {
+    el.onclick = function () {
+      var id = this.getAttribute('data-answer');
+      var chosen_section = document.getElementById(id);
+
+      Array.from(document.querySelectorAll('.script-section')).forEach(function (section) {
+        section.style.display = 'none';
+        Array.from(section.querySelectorAll('a')).forEach(function (anchor) {
+          anchor.classList.remove('enabled');
+        });
+      });
+
+      chosen_section.style.display = 'block';
+      Array.from(chosen_section.querySelectorAll('a')).forEach(function (anchor) {
+        anchor.classList.add('enabled');
+      });
+
+      initialize()
+    }
+  })
+}
+
+initialize()
+
+</script>

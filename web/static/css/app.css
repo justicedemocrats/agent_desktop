@@ -1,0 +1,11 @@
+/* This file is for your main application css. */
+html,
+body,
+main {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  padding: 10%;
+}
