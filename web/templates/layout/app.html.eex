@@ -39,12 +39,16 @@
       }
 
       .button-response-container > a.script-answer {
-        margin: 15px;
-        width: 200px;
+        margin: 5px;
+        width: 250px;
       }
 
       .candidate-header {
         text-align: center;
+      }
+
+      .script-answer {
+        font-size: 18px !important;
       }
     </style>
   </body>
