@@ -107,6 +107,7 @@ defmodule AgentDesktop.AirtableConfig do
         "order" => fields["Order"],
         "contents" => fields["Contents"],
         "widgets" => fields["Widgets"],
+        "color" => fields["Button Color"],
         "children" => fields["Nested Options"]
       }
     end)
