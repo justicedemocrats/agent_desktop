@@ -29,7 +29,11 @@
 
     <%= if answer["contact_widget"] != nil do %>
       <div>
-        <%= render "contact-widget.html", Map.merge(assigns, %{widget_id: answer["contact_widget"], section: answer["display_name"]}) %>
+        <%= render "contact-widget.html", Map.merge(assigns, %{
+          widget_id: answer["contact_widget"],
+          section: answer["display_name"],
+          candidate: @script.name
+        }) %>
       </div>
     <% end %>
 

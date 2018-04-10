@@ -9,6 +9,7 @@
     <input type="hidden" name="first_name" value="<%= @voter[~s(first)] %>" />
     <input type="hidden" name="last_name" value="<%= @voter[~s(last)] %>" />
     <input type="hidden" name="section" value="<%= @section %>" />
+    <input type="hidden" name="candidate" value="<%= @candidate %>" />
     <br/>
 
     <div class="input-field">
