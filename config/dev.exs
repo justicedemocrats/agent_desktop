@@ -38,4 +38,12 @@ config :agent_desktop,
   airtable_base: System.get_env("AIRTABLE_BASE"),
   airtable_table_name: System.get_env("AIRTABLE_TABLE_NAME")
 
+config :agent_desktop,
+  sorting_hat_url: System.get_env("SORTING_HAT_URL"),
+  sorting_hat_secret: System.get_env("SORTING_HAT_SECRET")
+
+config :agent_desktop,
+  text_webhook: System.get_env("TEXT_WEBHOOK"),
+  email_webhook: System.get_env("EMAIL_WEBHOOK")
+
 config :agent_desktop, secret: "secret"

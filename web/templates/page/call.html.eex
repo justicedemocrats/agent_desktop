@@ -1,13 +1,13 @@
 <div>
+  <button id="home-button" style="display: none; margin-bottom: 5px; float: left;" class="button" onclick="home()">
+    <i class="fa fa-home"></i>
+    Home
+  </button>
+
   <h1 class="candidate-header"> <%= @script.name %> </h1>
 </div>
 
 <br/>
-
-<button id="home-button" style="display: none; margin-bottom: 5px;" class="button-lg" onclick="home()">
-  <i class="fa fa-home"></i>
-  Home
-</button>
 
 <div id="top" class="script-section">
   <%= raw(top_contents(@voter, @script.answers)) %>
@@ -26,6 +26,12 @@
 <%= for answer <- non_top_answers(@script.answers) do %>
   <div id="<%= answer[~s(id)] %>" style="display: none;" class="script-section">
     <%= raw(answer_contents(@voter, answer)) %>
+
+    <%= if answer["contact_widget"] != nil do %>
+      <div>
+        <%= render "contact-widget.html", Map.merge(assigns, %{widget_id: answer["contact_widget"], section: answer["display_name"]}) %>
+      </div>
+    <% end %>
 
     <div class="button-response-container">
       <%= for answer <- sorted_answers_for(answer, @script.answers) do %>

@@ -42,7 +42,9 @@ defmodule AgentDesktop.AirtableConfig do
       end)
       |> Enum.into(%{})
 
-    ~m(listings scripts)a
+    contact_widgets = fetch_all("Contact Widgets") |> process_contact_widgets()
+
+    ~m(listings scripts contact_widgets)a
   end
 
   defp fetch_all(for_table) do
@@ -106,12 +108,23 @@ defmodule AgentDesktop.AirtableConfig do
         "display_name" => fields["Display Name"],
         "order" => fields["Order"],
         "contents" => fields["Contents"],
-        "widgets" => fields["Widgets"],
+        "contact_widget" => first_or_nil(fields["Contact Widget"]),
         "color" => fields["Button Color"],
         "children" => fields["Nested Options"]
       }
     end)
     |> Enum.into([])
+  end
+
+  defp first_or_nil(nil), do: nil
+  defp first_or_nil(l) when is_list(l), do: List.first(l)
+
+  defp process_contact_widgets(records) do
+    records
+    |> Enum.map(fn ~m(fields id) ->
+      {id, fields["Content"]}
+    end)
+    |> Enum.into(%{})
   end
 
   def slugify(reference_name) do

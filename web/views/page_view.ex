@@ -72,4 +72,8 @@ defmodule AgentDesktop.PageView do
     answers
     |> Enum.reject(&(&1["display_name"] == "TOP"))
   end
+
+  def get_widget_contents(widget_id) do
+    AgentDesktop.AirtableConfig.get_all().contact_widgets[widget_id]
+  end
 end

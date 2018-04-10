@@ -11,13 +11,13 @@
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>"/>
     <link rel="stylesheet" href="https://cdn.shoelace.style/1.0.0-beta24/shoelace.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/superagent/3.8.2/superagent.min.js"></script>
   </head>
 
   <body>
-    <main role="main" style="font-size: large; padding: 10%;">
+    <main role="main">
       <%= render @view_module, @view_template, assigns %>
     </main>
-    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
 
     <style>
       html,
@@ -28,7 +28,7 @@
       }
 
       body {
-        padding: 10%;
+        padding: 20%;
         text-align: left;
       }
 
@@ -45,10 +45,6 @@
 
       .candidate-header {
         text-align: center;
-      }
-
-      .script-answer {
-        font-size: 18px !important;
       }
     </style>
   </body>

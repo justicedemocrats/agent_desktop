@@ -16,6 +16,12 @@ defmodule AgentDesktop.Router do
 
     get("/", PageController, :index)
     get("/update", PageController, :update)
+    post("/contact-widget/:widget_id", ContactWidgetController, :create)
     get("/:type", PageController, :show)
+  end
+
+  scope "/api", AgentDesktop do
+    get("/lookup/:number", ContactWidgetController, :lookup)
+    post("/send-contact/:widget_id", ContactWidgetController, :create)
   end
 end
