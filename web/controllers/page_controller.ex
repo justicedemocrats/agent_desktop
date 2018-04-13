@@ -12,6 +12,7 @@ defmodule AgentDesktop.PageController do
   def show(conn, params = %{"type" => "call", "voter_account" => account_id}) do
     script = AgentDesktop.Scripts.script_for(account_id)
     voter = extract_voter(params)
+    IO.inspect(script)
     render(conn, "call.html", ~m(script voter)a)
   end
 

@@ -41,6 +41,7 @@
       .button-response-container > a.script-answer {
         margin: 5px;
         width: 250px;
+        font-size: 16px;
       }
 
       .candidate-header {

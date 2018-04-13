@@ -21,7 +21,10 @@ defmodule AgentDesktop.Router do
   end
 
   scope "/api", AgentDesktop do
-    get("/lookup/:number", ContactWidgetController, :lookup)
-    post("/send-contact/:widget_id", ContactWidgetController, :create)
+    get("/lookup/:number", ApiController, :lookup)
+    post("/send-contact/:widget_id", ApiController, :create)
+
+    get("/events/:candidate", ApiController, :get_events)
+    post("/events/:event_id/rsvp", ApiController, :rsvp)
   end
 end

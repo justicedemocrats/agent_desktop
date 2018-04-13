@@ -93,7 +93,8 @@ defmodule AgentDesktop.AirtableConfig do
         slugify(fields["Reference Name"]),
         %{
           "use_match" => Regex.compile!(fields["Account Regular Expression"]),
-          "reference_name" => fields["Reference Name"]
+          "reference_name" => fields["Reference Name"],
+          "event_slug" => fields["Event Slug"]
         }
       }
     end)
@@ -109,6 +110,7 @@ defmodule AgentDesktop.AirtableConfig do
         "order" => fields["Order"],
         "contents" => fields["Contents"],
         "contact_widget" => first_or_nil(fields["Contact Widget"]),
+        "event_widget" => fields["Event Widget"],
         "color" => fields["Button Color"],
         "children" => fields["Nested Options"]
       }

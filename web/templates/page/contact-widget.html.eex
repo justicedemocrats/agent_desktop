@@ -25,7 +25,9 @@
     <br/>
     <h5> Message Preview </h3>
     <blockquote>
-      <%= get_widget_contents(@widget_id) %>
+      <pre style="max-width: 60vw;">
+        <%= get_widget_contents(@widget_id) %>
+      </pre>
     </blockquote>
 
     <input type="submit" class="button button-block" value="Send"/>

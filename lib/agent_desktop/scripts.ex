@@ -12,8 +12,11 @@ defmodule AgentDesktop.Scripts do
       |> List.first()
 
     case match do
-      {slug, ~m(reference_name)} -> %{answers: scripts[slug], name: reference_name}
-      nil -> nil
+      {slug, listing = ~m(reference_name)} ->
+        %{answers: scripts[slug], name: reference_name, listing: listing}
+
+      nil ->
+        nil
     end
   end
 end

@@ -1,4 +1,4 @@
-defmodule AgentDesktop.ContactWidgetController do
+defmodule AgentDesktop.ApiController do
   use AgentDesktop.Web, :controller
   import ShortMaps
 
@@ -49,5 +49,17 @@ defmodule AgentDesktop.ContactWidgetController do
     end)
 
     render(conn, "done.html")
+  end
+
+  def get_events(conn, _params = ~m(candidate)) do
+    %{body: body} =
+      HTTPotion.get("https://map.justicedemocrats.com/api/events", query: ~m(candidate))
+
+    events = Poison.decode!(body)
+    json(conn, ~m(events))
+  end
+
+  def rsvp(conn, _params = ~m(event_id first_name last_name number email)) do
+    text(conn, "OK")
   end
 end

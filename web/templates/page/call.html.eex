@@ -36,6 +36,14 @@
         }) %>
       </div>
     <% end %>
+  
+    <%= if answer["event_widget"] == true do %>
+      <div>
+        <%= render "event-widget.html", Map.merge(assigns, %{
+          widget_id: answer["contact_widget"]
+        }) %>
+      </div>
+    <% end %>
 
     <div class="button-response-container">
       <%= for answer <- sorted_answers_for(answer, @script.answers) do %>
@@ -62,7 +70,7 @@ function handleButtonClick(params) {
   });
 
   chosen_section.style.display = 'block';
-  Array.from(chosen_section.querySelectorAll('a')).forEach(function (anchor) {
+  Array.from(chosen_section.querySelectorAll('a.script-answer')).forEach(function (anchor) {
     anchor.classList.add('enabled');
   });
 
@@ -73,6 +81,7 @@ function handleButtonClick(params) {
 
 function initialize () {
   Array.from(document.querySelectorAll('a.enabled')).forEach(function (el) {
+    console.log(el)
     el.onclick = handleButtonClick;
   })
 }

@@ -1,0 +1,67 @@
+<div id="<%= @widget_id %>-events" class="events">
+</div>
+
+<script>
+
+function renderEvents() {
+  window.superagent
+    .get('/api/events/<%= @script.listing["event_slug"] %>')
+    .end(function (err, res) {
+      console.log(err)
+      console.log(res)
+
+      var full_html =
+        res
+          .body
+          .events
+          .slice(0, 6)
+          .map(function (ev) {
+            return `
+              <div class="event">
+                <div class="box">
+                  <p><strong> ${ev.title} </strong> <br/>
+                  ${ev.date_line} </p>
+                </div>
+                <div class="box">
+                  <p><strong>${ev.location.venue}</strong> <br/>
+                  ${ev.location.address_lines[0]} <br/>
+                  ${ev.location.locality} ${ev.location.region} </p>
+                </div>
+                <a class="button" href="${ev.browser_url}" style="display: block;" target="_blank">
+                  RSVP
+                </a>
+              </div>
+            `
+          }).join('\n');
+      
+      document.getElementById("<%= @widget_id %>-events").innerHTML = full_html;
+    });
+}
+
+renderEvents()
+
+</script>
+
+<style>
+
+.event {
+  display: flex;
+  align-items: center;
+}
+
+.box {
+  width: 50%;
+  margin: 10px;
+  font-size: smaller;
+}
+
+.box > a {
+  text-decoration: none;
+  width: 20%;
+}
+
+form {
+  margin: 50px;
+}
+
+</style>
