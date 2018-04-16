@@ -2,7 +2,7 @@ defmodule AgentDesktop.PageController do
   use AgentDesktop.Web, :controller
   import ShortMaps
 
-  @cookie_minutes 1
+  @cookie_minutes 10
 
   def real_secret, do: Application.get_env(:agent_desktop, :secret)
 
