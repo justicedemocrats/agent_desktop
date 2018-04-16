@@ -15,21 +15,32 @@
   </head>
 
   <body>
-    <main role="main">
-      <%= render @view_module, @view_template, assigns %>
-    </main>
+    <div class="container">
+      <main role="main">
+        <%= render @view_module, @view_template, assigns %>
+      </main>
+    </div>
 
     <style>
       html,
       body,
-      main {
+      .container {
         height: 100%;
         width: 100%;
       }
 
-      body {
-        padding: 20%;
+      main {
+        max-width: 700px;
+        max-height: 100%;
+        padding: 30px;
+        overflow-y: scroll;
+      }
+
+      .container {
         text-align: left;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
 
       .button-response-container {

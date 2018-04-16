@@ -2,6 +2,8 @@ defmodule AgentDesktop.PageController do
   use AgentDesktop.Web, :controller
   import ShortMaps
 
+  @cookie_minutes 1
+
   def real_secret, do: Application.get_env(:agent_desktop, :secret)
 
   def index(conn, params) do
@@ -13,15 +15,28 @@ defmodule AgentDesktop.PageController do
     script = AgentDesktop.Scripts.script_for(account_id)
     voter = extract_voter(params)
     IO.inspect(script)
-    render(conn, "call.html", ~m(script voter)a)
+
+    conn
+    |> put_resp_cookie("last_voter_account", account_id, max_age: @cookie_minutes * 60)
+    |> render("call.html", ~m(script voter)a)
   end
 
   def show(conn, _params = %{"type" => "ready"}) do
-    render(conn, "ready.html")
+    ~m(ready_html) = get_stage_htmls(conn)
+    render(conn, "ready.html", ~m(ready_html)a)
   end
 
   def show(conn, _params = %{"type" => "notready"}) do
-    render(conn, "notready.html")
+    ~m(not_ready_html) = get_stage_htmls(conn)
+    render(conn, "notready.html", ~m(not_ready_html)a)
+  end
+
+  def get_stage_htmls(conn) do
+    if Map.has_key?(conn.cookies, "last_voter_account") do
+      AgentDesktop.Scripts.script_for(conn.cookies["last_voter_account"]).listing
+    else
+      AgentDesktop.Scripts.script_for("FALLBACK").listing
+    end
   end
 
   def extract_voter(params) do

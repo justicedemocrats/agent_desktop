@@ -1,5 +1,4 @@
 <div>
-  <h2> You're ready! </h2>
-  <p> Calls will be coming soon </p>
+  <%= raw(@ready_html) %>
 </div>
 

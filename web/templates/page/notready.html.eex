@@ -1,5 +1,4 @@
 <div>
-  <h2> You're not ready! </h2>
-  <p> Please go ready to receive calls. Insert image here later, Ben. </p>
+  <%= raw(@not_ready_html) %>
 </div>
 

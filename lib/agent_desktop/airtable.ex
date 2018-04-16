@@ -94,7 +94,9 @@ defmodule AgentDesktop.AirtableConfig do
         %{
           "use_match" => Regex.compile!(fields["Account Regular Expression"]),
           "reference_name" => fields["Reference Name"],
-          "event_slug" => fields["Event Slug"]
+          "event_slug" => fields["Event Slug"],
+          "ready_html" => fields["Ready HTML"],
+          "not_ready_html" => fields["Not Ready HTML"]
         }
       }
     end)
@@ -106,6 +108,7 @@ defmodule AgentDesktop.AirtableConfig do
     |> Enum.map(fn ~m(fields id) ->
       %{
         "id" => id,
+        "reference_name" => fields["Reference Name"],
         "display_name" => fields["Display Name"],
         "order" => fields["Order"],
         "contents" => fields["Contents"],
