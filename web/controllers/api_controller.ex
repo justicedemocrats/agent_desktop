@@ -39,7 +39,7 @@ defmodule AgentDesktop.ApiController do
 
         HTTPotion.post(
           Application.get_env(:agent_desktop, :text_webhook),
-          body: Poison.encode!(body) |> IO.inspect()
+          body: Poison.encode!(body)
         )
       else
         body =
