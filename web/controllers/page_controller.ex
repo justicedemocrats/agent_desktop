@@ -59,8 +59,7 @@ defmodule AgentDesktop.PageController do
         true -> "mega_callers"
       end
 
-    Enum.map(~w(low_callers mid_callers high_callers super_callers), &{&1, 0})
-    |> Enum.into(%{})
+    %{}
     |> Map.put(selected, 1)
     |> Map.merge(~m(caller_count wait_time))
   end
