@@ -49,7 +49,7 @@ defmodule AgentDesktop.PageView do
   end
 
   def do_replacement(base_contents, voter) do
-    Enum.reduce(~w(first last phone), base_contents, fn replacement, acc ->
+    Enum.reduce(~w(first last phone extra_7 extra_13 extra_14), base_contents, fn replacement, acc ->
       replacement_regex = Regex.compile!("{{[^(}{})]*#{replacement}[^(}{})]*}}")
       replacement_text = Map.get(voter, replacement, @defaults[replacement])
       String.replace(acc, replacement_regex, replacement_text, global: true)
