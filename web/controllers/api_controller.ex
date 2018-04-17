@@ -23,12 +23,19 @@ defmodule AgentDesktop.ApiController do
 
   def create(conn, params = ~m(widget_id email_or_text)) do
     spawn(fn ->
+      ~m(content image) = AgentDesktop.AirtableConfig.get_all().contact_widgets[widget_id]
+
+      body =
+        params
+        |> Map.drop(~w(widget_id email_or_text number original_number email))
+        |> Map.put("message", content)
+
+      body = if image != nil, do: Map.put(body, "image", image), else: body
+
       if email_or_text == "text" do
         body =
-          params
-          |> Map.drop(~w(widget_id email_or_text number))
+          body
           |> Map.put("to", params["number"])
-          |> Map.put("message", AgentDesktop.AirtableConfig.get_all().contact_widgets[widget_id])
 
         HTTPotion.post(
           Application.get_env(:agent_desktop, :text_webhook),
@@ -36,10 +43,8 @@ defmodule AgentDesktop.ApiController do
         )
       else
         body =
-          params
-          |> Map.drop(~w(widget_id email_or_text number original_number email))
+          body
           |> Map.put("to", params["email"])
-          |> Map.put("message", AgentDesktop.AirtableConfig.get_all().contact_widgets[widget_id])
 
         HTTPotion.post(
           Application.get_env(:agent_desktop, :email_webhook),

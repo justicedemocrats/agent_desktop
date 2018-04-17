@@ -77,7 +77,8 @@ defmodule AgentDesktop.PageView do
   end
 
   def get_widget_contents(widget_id) do
-    AgentDesktop.AirtableConfig.get_all().contact_widgets[widget_id]
+    AgentDesktop.AirtableConfig.get_all().contact_widgets
+    |> get_in([widget_id, "content"])
     |> String.replace("\n", "<br/>", global: true)
   end
 end

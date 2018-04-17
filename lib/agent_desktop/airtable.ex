@@ -129,7 +129,11 @@ defmodule AgentDesktop.AirtableConfig do
   defp process_contact_widgets(records) do
     records
     |> Enum.map(fn ~m(fields id) ->
-      {id, fields["Content"]}
+      {id,
+       %{
+         "content" => fields["Content"],
+         "image" => fields["Image"]
+       }}
     end)
     |> Enum.into(%{})
   end
