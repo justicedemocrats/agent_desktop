@@ -13,13 +13,13 @@
     <br/>
 
     <div class="input-field">
-      <input id="text-toggle" type="radio" name="email_or_text" value="text" checked="true" onclick="handleTextToggle(this)" /> <label> Text </label>
+      <input class="text-toggle" type="radio" name="email_or_text" value="text" checked="true" onclick="handleTextToggle(this, '<%= @widget_id %>')" /> <label> Text </label>
 
-      <span id="is-mobile-insert"></span>
+      <span class="is-mobile-insert"></span>
       <br/>
 
-      <input id="email-toggle" type="radio" name="email_or_text" value="email" onclick="handleEmailToggle(this)" /> <label> Email </label>
-      <input id="email-input" type="email" name="email" placeholder="name@example.com" style="display: none;"/>
+      <input class="email-toggle" type="radio" name="email_or_text" value="email" onclick="handleEmailToggle(this, '<%= @widget_id %>')" /> <label> Email </label>
+      <input class="email-input" type="email" name="email" placeholder="name@example.com" style="display: none;"/>
     </div>
 
     <br/>
@@ -35,16 +35,16 @@
 
 <script>
 
-function handleTextToggle(el) {
+function handleTextToggle(el, widget_id) {
   var keep;
   var remove;
 
   if (el.checked) {
-    keep = document.getElementById("text-input");
-    remove = document.getElementById("email-input");
+    keep = document.getElementById(widget_id).querySelector(".text-input");
+    remove = document.getElementById(widget_id).querySelector(".email-input");
   } else {
-    remove = document.getElementById("text-input");
-    keep = document.getElementById("email-input");
+    remove = document.getElementById(widget_id).querySelector(".text-input");
+    keep = document.getElementById(widget_id).querySelector(".email-input");
   }
 
   keep.setAttribute("required", "required");
@@ -55,16 +55,16 @@ function handleTextToggle(el) {
   remove.style.display = "none";
 }
 
-function handleEmailToggle (el) {
+function handleEmailToggle (el, widget_id) {
   var keep;
   var remove;
 
   if (!el.checked) {
-    keep = document.getElementById("text-input");
-    remove = document.getElementById("email-input");
+    keep = document.getElementById(widget_id).querySelector(".text-input");
+    remove = document.getElementById(widget_id).querySelector(".email-input");
   } else {
-    remove = document.getElementById("text-input");
-    keep = document.getElementById("email-input");
+    remove = document.getElementById(widget_id).querySelector(".text-input");
+    keep = document.getElementById(widget_id).querySelector(".email-input");
   }
 
   keep.setAttribute("required", "required");
@@ -84,11 +84,11 @@ function renderIsMobile() {
       var is_mobile = err || res.body.is_moble === false;
 
       if (is_mobile) {
-        document.getElementById('is-mobile-insert').innerHTML =
+        document.getElementById("<%= @widget_id %>").querySelector('.is-mobile-insert').innerHTML =
           '<input type="tel" style="display: none;" name="number" value="<%= @voter[~s(phone)] %>"/>';
       } else {
-        document.getElementById('is-mobile-insert').innerHTML =
-          '<input id="text-input" type="tel" name="number" required="true" />\
+        document.getElementById("<%= @widget_id %>").querySelector('.is-mobile-insert').innerHTML =
+          '<input class="text-input" type="tel" name="number" required="true" />\
           <p class="input-hint"> You are calling them at a landline. What is their cell phone? </p>'
       }
     });

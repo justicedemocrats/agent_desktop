@@ -48,7 +48,7 @@ defmodule AgentDesktop.ApiController do
       end
     end)
 
-    render(conn, "done.html")
+    text(conn, "OK")
   end
 
   def get_events(conn, _params = ~m(candidate)) do
