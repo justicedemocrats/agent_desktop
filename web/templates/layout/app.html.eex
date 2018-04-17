@@ -8,11 +8,11 @@
     <meta name="author" content="">
 
     <title>Hello AgentDesktop!</title>
-    <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>"/>
     <link rel="stylesheet" href="https://cdn.shoelace.style/1.0.0-beta24/shoelace.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/superagent/3.8.2/superagent.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.min.js"></script>
+    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </head>
 
   <body>

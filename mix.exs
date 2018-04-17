@@ -39,9 +39,10 @@ defmodule AgentDesktop.Mixfile do
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
       {:short_maps, "~> 0.1.2"},
-      {:httpotion, "~> 3.0.3"},
+      {:httpotion, "~> 3.1.0"},
       {:quantum, ">= 2.2.1"},
-      {:distillery, "~> 1.5.0", runtime: false}
+      {:distillery, "~> 1.5.0", runtime: false},
+      {:actionkit, git: "https://github.com/justicedemocrats/actionkit_ex.git"}
     ]
   end
 end

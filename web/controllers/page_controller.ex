@@ -7,14 +7,12 @@ defmodule AgentDesktop.PageController do
   def real_secret, do: Application.get_env(:agent_desktop, :secret)
 
   def index(conn, params) do
-    IO.inspect(params)
     render(conn, "index.html")
   end
 
   def show(conn, params = %{"type" => "call", "voter_account" => account_id}) do
     script = AgentDesktop.Scripts.script_for(account_id)
     voter = extract_voter(params)
-    IO.inspect(script)
 
     conn
     |> put_resp_cookie("last_voter_account", account_id, max_age: @cookie_minutes * 60)
@@ -29,7 +27,8 @@ defmodule AgentDesktop.PageController do
 
   def show(conn, _params = %{"type" => "notready"}) do
     ~m(not_ready_html service_name) = get_stage_htmls(conn)
-    render(conn, "notready.html", ~m(not_ready_html)a)
+    data = get_live_calling_data(service_name)
+    render(conn, "notready.html", ~m(not_ready_html data)a)
   end
 
   def get_stage_htmls(conn) do

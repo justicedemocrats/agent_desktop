@@ -47,4 +47,9 @@ config :agent_desktop,
   email_webhook: System.get_env("EMAIL_WEBHOOK"),
   live_info_url: System.get_env("LIVE_INFO_URL")
 
+config :actionkit,
+  base: System.get_env("AK_BASE"),
+  username: System.get_env("AK_USERNAME"),
+  password: System.get_env("AK_PASSWORD")
+
 config :agent_desktop, secret: "secret"

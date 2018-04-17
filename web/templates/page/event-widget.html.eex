@@ -1,4 +1,11 @@
-<div id="<%= @widget_id %>-events" class="events">
+<div class="events" data-controller="event">
+  <div class="input-field">
+    <label for="email"> What is their email address? </label>
+    <input type="email" data-target="event.email" />
+    <p class="input-hint"> We'll send them a confirmation at their email address </p>
+  </div>
+  <div id="<%= @widget_id %>-events">
+  </div>
 </div>
 
 <script>
@@ -7,31 +14,31 @@ function renderEvents() {
   window.superagent
     .get('/api/events/<%= @script.listing["event_slug"] %>')
     .end(function (err, res) {
-      console.log(err)
-      console.log(res)
-
       var full_html =
         res
           .body
           .events
           .slice(0, 6)
           .map(function (ev) {
+
             return `
               <div class="event">
                 <div class="box">
                   <p><strong> ${ev.title} </strong> <br/>
                   ${ev.date_line} </p>
                 </div>
+
                 <div class="box">
                   <p><strong>${ev.location.venue}</strong> <br/>
                   ${ev.location.address_lines[0]} <br/>
                   ${ev.location.locality} ${ev.location.region} </p>
                 </div>
-                <a class="button" href="${ev.browser_url}" style="display: block;" target="_blank">
+                <a class="button" target="_blank" data-action="click->event#rsvp" id="event-${ev.id}">
                   RSVP
                 </a>
               </div>
             `
+
           }).join('\n');
       
       document.getElementById("<%= @widget_id %>-events").innerHTML = full_html;

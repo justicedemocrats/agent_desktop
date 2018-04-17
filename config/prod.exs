@@ -19,4 +19,9 @@ config :agent_desktop,
   email_webhook: "${EMAIL_WEBHOOK}",
   live_info_url: "${LIVE_INFO_URL}"
 
+config :actionkit,
+  base: "${AK_BASE}",
+  username: "${AK_USERNAME}",
+  password: "${AK_PASSWORD}"
+
 config :agent_desktop, secret: "${SECRET}"

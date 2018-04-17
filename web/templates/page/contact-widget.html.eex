@@ -79,8 +79,6 @@ function renderIsMobile() {
   window.superagent
     .get('/api/lookup/<%= @voter[~s(phone)] %>')
     .end(function (err, res) {
-      console.log(err)
-      console.log(res)
       var is_mobile = err || res.body.is_moble === false;
 
       if (is_mobile) {
@@ -120,8 +118,6 @@ form.addEventListener('submit', function (ev) {
     .send(data)
     .end(function (err, res) {
       var container = document.getElementById('widget-container-<%= @widget_id %>')
-      console.log(container)
-      console.log(container.parentElement)
       container.parentElement.innerHTML = '<h3> Message Sent </h3>';
     })
 })

@@ -59,7 +59,20 @@ defmodule AgentDesktop.ApiController do
     json(conn, ~m(events))
   end
 
-  def rsvp(conn, _params = ~m(event_id first_name last_name number email)) do
+  def rsvp(conn, _params = ~m(event_id first last phone email)) do
+    Ak.Api.post(
+      "action",
+      body: %{
+        "page" => "signup",
+        "event_id" => event_id,
+        "email" => email,
+        "first_name" => first,
+        "last_name" => last,
+        "number" => phone,
+        "event_signup_ground_rules" => 1
+      }
+    )
+
     text(conn, "OK")
   end
 end
