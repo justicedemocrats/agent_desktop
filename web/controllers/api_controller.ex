@@ -55,7 +55,32 @@ defmodule AgentDesktop.ApiController do
     %{body: body} =
       HTTPotion.get("https://map.justicedemocrats.com/api/events", query: ~m(candidate))
 
-    events = Poison.decode!(body)
+    all_events = Poison.decode!(body)
+
+    schema =
+      AgentDesktop.AirtableConfig.get_all().listings
+      |> Enum.map(fn {_, m} -> m end)
+      |> Enum.filter(&(&1["event_slug"] == candidate))
+      |> List.first()
+      |> Map.get("events_filter", nil)
+
+    filter_fn =
+      case schema do
+        nil ->
+          fn _ -> true end
+
+        encoded ->
+          json_schema = encoded |> Poison.decode!()
+
+          fn ev ->
+            case ExJsonSchema.Validator.validate(json_schema, ev) do
+              :ok -> true
+              _ -> false
+            end
+          end
+      end
+
+    events = Enum.filter(all_events, &filter_fn.(&1))
     json(conn, ~m(events))
   end
 

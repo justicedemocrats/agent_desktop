@@ -97,7 +97,8 @@ defmodule AgentDesktop.AirtableConfig do
           "event_slug" => fields["Event Slug"],
           "ready_html" => fields["Ready HTML"],
           "not_ready_html" => fields["Not Ready HTML"],
-          "service_name" => fields["Service Name"]
+          "service_name" => fields["Service Name"],
+          "events_filter" => fields["Events Filter"]
         }
       }
     end)
