@@ -5,7 +5,10 @@ defmodule AgentDesktop.PageView do
   @defaults %{
     "first" => "friend",
     "last" => "",
-    "phone" => ""
+    "phone" => "",
+    "extra_7" => "",
+    "extra_13" => "",
+    "extra_14" => ""
   }
 
   def top_contents(voter, answers) do
