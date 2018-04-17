@@ -44,6 +44,7 @@ config :agent_desktop,
 
 config :agent_desktop,
   text_webhook: System.get_env("TEXT_WEBHOOK"),
-  email_webhook: System.get_env("EMAIL_WEBHOOK")
+  email_webhook: System.get_env("EMAIL_WEBHOOK"),
+  live_info_url: System.get_env("LIVE_INFO_URL")
 
 config :agent_desktop, secret: "secret"

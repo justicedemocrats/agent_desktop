@@ -9,6 +9,8 @@
   "httpotion": {:hex, :httpotion, "3.0.3", "17096ea1a7c0b2df74509e9c15a82b670d66fc4d66e6ef584189f63a9759428d", [:mix], [{:ibrowse, "~> 4.4", [hex: :ibrowse, repo: "hexpm", optional: false]}], "hexpm"},
   "ibrowse": {:hex, :ibrowse, "4.4.0", "2d923325efe0d2cb09b9c6a047b2835a5eda69d8a47ed6ff8bc03628b764e991", [:rebar3], [], "hexpm"},
   "mime": {:hex, :mime, "1.2.0", "78adaa84832b3680de06f88f0997e3ead3b451a440d183d688085be2d709b534", [:mix], [], "hexpm"},
+  "mustache": {:git, "https://github.com/jui/mustachex.git", "a31c34435dd33a81dd21ee2cc73b3bb305d8c70f", []},
+  "neotoma": {:hex, :neotoma, "1.7.3", "d8bd5404b73273989946e4f4f6d529e5c2088f5fa1ca790b4dbe81f4be408e61", [:rebar], [], "hexpm"},
   "phoenix": {:hex, :phoenix, "1.3.2", "2a00d751f51670ea6bc3f2ba4e6eb27ecb8a2c71e7978d9cd3e5de5ccf7378bd", [:mix], [{:cowboy, "~> 1.0", [hex: :cowboy, repo: "hexpm", optional: true]}, {:phoenix_pubsub, "~> 1.0", [hex: :phoenix_pubsub, repo: "hexpm", optional: false]}, {:plug, "~> 1.3.3 or ~> 1.4", [hex: :plug, repo: "hexpm", optional: false]}, {:poison, "~> 2.2 or ~> 3.0", [hex: :poison, repo: "hexpm", optional: false]}], "hexpm"},
   "phoenix_html": {:hex, :phoenix_html, "2.11.1", "77b6f7fbd252168c6ec4f573de648d37cc5258cda13266ef001fbf99267eb6f3", [:mix], [{:plug, "~> 1.5", [hex: :plug, repo: "hexpm", optional: false]}], "hexpm"},
   "phoenix_live_reload": {:hex, :phoenix_live_reload, "1.1.3", "1d178429fc8950b12457d09c6afec247bfe1fcb6f36209e18fbb0221bdfe4d41", [:mix], [{:file_system, "~> 0.2.1 or ~> 0.3", [hex: :file_system, repo: "hexpm", optional: false]}, {:phoenix, "~> 1.0 or ~> 1.2 or ~> 1.3", [hex: :phoenix, repo: "hexpm", optional: false]}], "hexpm"},
@@ -18,4 +20,5 @@
   "quantum": {:hex, :quantum, "2.2.7", "134277fdd2b9173d0bb53cb33b61f8f6cc5de75bd61c2e789850a202f72f9b0f", [:mix], [{:calendar, "~> 0.17", [hex: :calendar, repo: "hexpm", optional: true]}, {:crontab, "~> 1.1", [hex: :crontab, repo: "hexpm", optional: false]}, {:gen_stage, "~> 0.12", [hex: :gen_stage, repo: "hexpm", optional: false]}, {:timex, "~> 3.1", [hex: :timex, repo: "hexpm", optional: true]}], "hexpm"},
   "ranch": {:hex, :ranch, "1.3.2", "e4965a144dc9fbe70e5c077c65e73c57165416a901bd02ea899cfd95aa890986", [:rebar3], [], "hexpm"},
   "short_maps": {:hex, :short_maps, "0.1.2", "a7c2bfd91179cdbdfe90e74a023992335d116982fa672612c74776b2e9257a7b", [:mix], [], "hexpm"},
+  "solid": {:hex, :solid, "0.0.2", "5eeb35130670c3b7e301773565d61976920ab8321e25b0acf07fa1accb787871", [:mix], [{:neotoma, "~> 1.7.3", [hex: :neotoma, repo: "hexpm", optional: false]}], "hexpm"},
 }

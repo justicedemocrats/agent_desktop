@@ -1,4 +1,11 @@
-<div>
-  <%= raw(@not_ready_html) %>
+<div id="notready">
 </div>
+
+<script>
+  var template = `<%= raw(@not_ready_html) %>`;
+  var rendered = Mustache.render(template, JSON.parse('<%= raw(Poison.encode!(@data)) %>'));
+  document.getElementById("notready").innerHTML = rendered;
+</script>
+
+
 

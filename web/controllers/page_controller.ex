@@ -22,12 +22,13 @@ defmodule AgentDesktop.PageController do
   end
 
   def show(conn, _params = %{"type" => "ready"}) do
-    ~m(ready_html) = get_stage_htmls(conn)
-    render(conn, "ready.html", ~m(ready_html)a)
+    ~m(ready_html service_name) = get_stage_htmls(conn)
+    data = get_live_calling_data(service_name)
+    render(conn, "ready.html", ~m(ready_html data)a)
   end
 
   def show(conn, _params = %{"type" => "notready"}) do
-    ~m(not_ready_html) = get_stage_htmls(conn)
+    ~m(not_ready_html service_name) = get_stage_htmls(conn)
     render(conn, "notready.html", ~m(not_ready_html)a)
   end
 
@@ -37,6 +38,31 @@ defmodule AgentDesktop.PageController do
     else
       AgentDesktop.Scripts.script_for("FALLBACK").listing
     end
+  end
+
+  def get_live_calling_data(nil) do
+    %{}
+  end
+
+  def get_live_calling_data(service_name) do
+    %{body: body} =
+      HTTPotion.get!(Application.get_env(:agent_desktop, :live_info_url), query: ~m(service_name))
+
+    ~m(caller_count wait_time) = Poison.decode!(body)
+
+    selected =
+      cond do
+        caller_count <= 3 -> "low_callers"
+        caller_count <= 7 -> "mid_callers"
+        caller_count <= 12 -> "high_callers"
+        caller_count <= 20 -> "super_callers"
+        true -> "mega_callers"
+      end
+
+    Enum.map(~w(low_callers mid_callers high_callers super_callers), &{&1, 0})
+    |> Enum.into(%{})
+    |> Map.put(selected, 1)
+    |> Map.merge(~m(caller_count wait_time))
   end
 
   def extract_voter(params) do

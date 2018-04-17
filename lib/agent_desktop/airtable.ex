@@ -96,7 +96,8 @@ defmodule AgentDesktop.AirtableConfig do
           "reference_name" => fields["Reference Name"],
           "event_slug" => fields["Event Slug"],
           "ready_html" => fields["Ready HTML"],
-          "not_ready_html" => fields["Not Ready HTML"]
+          "not_ready_html" => fields["Not Ready HTML"],
+          "service_name" => fields["Service Name"]
         }
       }
     end)

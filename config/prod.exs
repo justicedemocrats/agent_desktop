@@ -16,6 +16,7 @@ config :agent_desktop,
 
 config :agent_desktop,
   text_webhook: "${TEXT_WEBHOOK}",
-  email_webhook: "${EMAIL_WEBHOOK}"
+  email_webhook: "${EMAIL_WEBHOOK}",
+  live_info_url: "${LIVE_INFO_URL}"
 
 config :agent_desktop, secret: "${SECRET}"
