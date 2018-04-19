@@ -31,7 +31,7 @@
       <div>
         <%= render "contact-widget.html", Map.merge(assigns, %{
           widget_id: answer["contact_widget"],
-          section: answer["display_name"],
+          section: answer["reference_name"],
           candidate: @script.name
         }) %>
       </div>
