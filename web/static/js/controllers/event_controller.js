@@ -18,7 +18,7 @@ export default class extends Controller {
         })
         .end(function(err, res) {
           ev.target.classList.remove("button-loader");
-          ev.innerHTML = "Done!";
+          ev.target.innerText = "Done!";
         });
     }
   }
