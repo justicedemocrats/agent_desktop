@@ -1,0 +1,3 @@
+mkdir -p priv/static
+NODE_ENV=prod node_modules/parcel-bundler/bin/cli.js build lib/livevox_web/static/js/app.js --out-dir priv/static/js
+mix phx.digest
