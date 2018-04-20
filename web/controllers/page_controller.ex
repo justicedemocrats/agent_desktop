@@ -44,23 +44,32 @@ defmodule AgentDesktop.PageController do
   end
 
   def get_live_calling_data(service_name) do
-    %{body: body} =
-      HTTPotion.get!(Application.get_env(:agent_desktop, :live_info_url), query: ~m(service_name))
+    IO.inspect(service_name)
 
-    ~m(caller_count wait_time) = Poison.decode!(body)
+    try do
+      %{body: body} =
+        HTTPotion.get!(
+          Application.get_env(:agent_desktop, :live_info_url),
+          query: ~m(service_name)
+        )
 
-    selected =
-      cond do
-        caller_count <= 3 -> "low_callers"
-        caller_count <= 7 -> "mid_callers"
-        caller_count <= 12 -> "high_callers"
-        caller_count <= 20 -> "super_callers"
-        true -> "mega_callers"
-      end
+      ~m(caller_count wait_time) = Poison.decode!(body)
 
-    %{}
-    |> Map.put(selected, 1)
-    |> Map.merge(~m(caller_count wait_time))
+      selected =
+        cond do
+          caller_count <= 3 -> "low_callers"
+          caller_count <= 7 -> "mid_callers"
+          caller_count <= 12 -> "high_callers"
+          caller_count <= 20 -> "super_callers"
+          true -> "mega_callers"
+        end
+
+      %{}
+      |> Map.put(selected, 1)
+      |> Map.merge(~m(caller_count wait_time))
+    rescue
+      _ -> %{}
+    end
   end
 
   def extract_voter(params) do
