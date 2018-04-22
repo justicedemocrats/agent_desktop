@@ -7,7 +7,17 @@ defmodule AgentDesktop do
     children = [
       supervisor(AgentDesktop.Endpoint, []),
       worker(AgentDesktop.AirtableConfig, []),
-      worker(AgentDesktop.Scheduler, [])
+      worker(AgentDesktop.Scheduler, []),
+      worker(Mongo, [
+        [
+          name: :mongo,
+          database: "agent_desktop",
+          username: Application.get_env(:agent_desktop, :mongo_username),
+          password: Application.get_env(:agent_desktop, :mongo_password),
+          seeds: Application.get_env(:agent_desktop, :mongo_seeds),
+          port: Application.get_env(:agent_desktop, :mongo_port)
+        ]
+      ])
     ]
 
     opts = [strategy: :one_for_one, name: AgentDesktop.Supervisor]

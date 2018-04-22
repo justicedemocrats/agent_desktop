@@ -43,7 +43,9 @@ defmodule AgentDesktop.Mixfile do
       {:quantum, ">= 2.2.1"},
       {:distillery, "~> 1.5.0", runtime: false},
       {:ex_json_schema, "~> 0.5.4"},
-      {:actionkit, git: "https://github.com/justicedemocrats/actionkit_ex.git"}
+      {:actionkit, git: "https://github.com/justicedemocrats/actionkit_ex.git"},
+      {:mongodb, "~> 0.4.3"},
+      {:nimble_csv, "~> 0.3"}
     ]
   end
 end

@@ -1,5 +1,6 @@
 defmodule AgentDesktop.ApiController do
   use AgentDesktop.Web, :controller
+  alias NimbleCSV.RFC4180, as: CSV
   import ShortMaps
 
   def lookup(conn, ~m(number)) do
@@ -104,5 +105,120 @@ defmodule AgentDesktop.ApiController do
     )
 
     text(conn, "OK")
+  end
+
+  def form_submit(conn, params) do
+    timestamp = DateTime.utc_now()
+    data = Map.merge(params, ~m(timestamp))
+    {:ok, _} = Mongo.insert_one(:mongo, "submissions", data)
+    text(conn, "OK")
+  end
+
+  def get_submissions(conn, params = ~m(candidate form)) do
+    time_query = extract_time_query(params)
+    query = Map.merge(~m(candidate form), time_query)
+
+    ~m(from to) =
+      case time_query do
+        %{"timestamp" => %{"$gt" => from, "$lt" => to}} -> ~m(from to)
+        _ -> %{"from" => "start", "to" => "end"}
+      end
+
+    data =
+      Mongo.find(:mongo, "submissions", query)
+      |> Enum.map(&Map.drop(&1, ~w(_id)))
+      |> IO.inspect()
+
+    if params["type"] == "csv" do
+      contents = convert_to_csv(data)
+
+      conn
+      |> put_resp_content_type("text/csv")
+      |> put_resp_header(
+        "content-disposition",
+        "attachment; filename=\"#{candidate}|#{form}|#{fnify_date(from)}-#{fnify_date(to)}.csv\""
+      )
+      |> send_resp(200, contents)
+    else
+      json(conn, data)
+    end
+  end
+
+  def get_submissions(conn, params) do
+    body =
+      cond do
+        not Map.has_key?(params, "candidate") ->
+          %{"error" => "Missing required parameter: [candidate]"}
+
+        not Map.has_key?(params, "form") ->
+          %{"error" => "Missing required parameter: [form]"}
+
+        true ->
+          %{"error" => "Unknown: contact Ben."}
+      end
+
+    conn
+    |> put_status(400)
+    |> json(body)
+  end
+
+  def extract_time_query(~m(start_day count)) do
+    now = Timex.now("America/New_York")
+    start_datetime = Timex.parse!(start_day, "{M}-{D}")
+    {count, _} = Integer.parse(count)
+
+    start_datetime_est =
+      Timex.set(
+        now,
+        year: now.year,
+        day: start_datetime.day,
+        month: start_datetime.month,
+        hour: 0,
+        minute: 0,
+        second: 0
+      )
+
+    end_datetime_est = Timex.shift(start_datetime_est, days: count)
+    %{"timestamp" => %{"$gt" => start_datetime_est, "$lt" => end_datetime_est}}
+  end
+
+  def extract_time_query(_) do
+    %{}
+  end
+
+  def fnify_date(dt = %DateTime{}), do: DateTime.to_iso8601(dt)
+  def fnify_date(dt), do: dt
+
+  def convert_to_csv(contents) do
+    normalized =
+      Enum.map(contents, fn ~m(timestamp data) ->
+        Enum.map(data, fn
+          {k, v} when is_list(v) -> {k, Enum.join(v, ",")}
+          {k, v} -> {k, v}
+        end)
+        |> Enum.into(%{})
+        |> Map.merge(~m(timestamp))
+      end)
+
+    ordered = ~w(timestamp voter_id first_name last_name)
+
+    custom_columns =
+      List.first(normalized)
+      |> Map.keys()
+      |> MapSet.new()
+      |> MapSet.difference(MapSet.new(ordered))
+      |> MapSet.to_list()
+      |> IO.inspect()
+
+    columns = Enum.concat(ordered, custom_columns)
+
+    Enum.concat(
+      [columns],
+      Enum.map(normalized, fn row ->
+        Enum.map(columns, &Map.get(row, IO.inspect(&1)))
+      end)
+    )
+    |> CSV.dump_to_iodata()
+    |> IO.iodata_to_binary()
   end
 end

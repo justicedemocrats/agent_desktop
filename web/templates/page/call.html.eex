@@ -45,6 +45,18 @@
       </div>
     <% end %>
 
+    <%= if is_list(answer["questions"]) do %>
+      <div>
+        <%= render "form-widget.html", Map.merge(assigns, %{
+          widget_id: answer["id"],
+          section: answer["reference_name"],
+          questions: questions_for(answer["questions"]),
+          form_label: answer["form_label"],
+          candidate: @script.name
+        }) %>
+      </div>
+    <% end %>
+
     <div class="button-response-container">
       <%= for answer <- sorted_answers_for(answer, @script.answers) do %>
         <a class="button button-xl script-answer button-<%= answer[~s(color)] %>"

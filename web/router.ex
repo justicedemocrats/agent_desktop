@@ -10,6 +10,10 @@ defmodule AgentDesktop.Router do
     plug(AgentDesktop.IframePlug)
   end
 
+  pipeline :private do
+    plug(AgentDesktop.SecretPlug)
+  end
+
   scope "/", AgentDesktop do
     # Use the default browser stack
     pipe_through(:browser)
@@ -26,5 +30,12 @@ defmodule AgentDesktop.Router do
 
     get("/events/:candidate", ApiController, :get_events)
     post("/events/:event_id/rsvp", ApiController, :rsvp)
+    post("/form", ApiController, :form_submit)
+  end
+
+  scope "/api", AgentDesktop do
+    pipe_through(:private)
+
+    get("/submissions", ApiController, :get_submissions)
   end
 end

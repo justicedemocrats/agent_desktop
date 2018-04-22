@@ -81,4 +81,17 @@ defmodule AgentDesktop.PageView do
     |> get_in([widget_id, "content"])
     |> String.replace("\n", "<br/>", global: true)
   end
+
+  def namify(text) do
+    text
+    |> String.downcase()
+    |> String.replace(" ", "_")
+  end
+
+  def questions_for(question_ids) do
+    questions = AgentDesktop.AirtableConfig.get_all().questions
+
+    Enum.map(question_ids, &Map.get(questions, &1))
+    |> IO.inspect()
+  end
 end

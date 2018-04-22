@@ -52,4 +52,13 @@ config :actionkit,
   username: System.get_env("AK_USERNAME"),
   password: System.get_env("AK_PASSWORD")
 
+config :agent_desktop,
+  mongo_username: System.get_env("MONGO_USERNAME"),
+  mongo_password: System.get_env("MONGO_PASSWORD"),
+  mongo_seeds: [
+    System.get_env("MONGO_SEED_1"),
+    System.get_env("MONGO_SEED_2")
+  ],
+  mongo_port: System.get_env("MONGO_PORT")
+
 config :agent_desktop, secret: "secret"

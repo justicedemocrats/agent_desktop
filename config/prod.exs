@@ -24,4 +24,13 @@ config :actionkit,
   username: "${AK_USERNAME}",
   password: "${AK_PASSWORD}"
 
+config :agent_desktop,
+  mongo_username: "${MONGO_USERNAME}",
+  mongo_password: "${MONGO_PASSWORD}",
+  mongo_seeds: [
+    "${MONGO_SEED_1}",
+    "${MONGO_SEED_2}"
+  ],
+  mongo_port: "${MONGO_PORT}"
+
 config :agent_desktop, secret: "${SECRET}"

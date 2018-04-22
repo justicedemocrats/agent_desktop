@@ -43,8 +43,9 @@ defmodule AgentDesktop.AirtableConfig do
       |> Enum.into(%{})
 
     contact_widgets = fetch_all("Contact Widgets") |> process_contact_widgets()
+    questions = fetch_all("Custom Questions") |> process_question_widgets()
 
-    ~m(listings scripts contact_widgets)a
+    ~m(listings scripts contact_widgets questions)a
   end
 
   defp fetch_all(for_table) do
@@ -116,6 +117,8 @@ defmodule AgentDesktop.AirtableConfig do
         "contents" => fields["Contents"],
         "contact_widget" => first_or_nil(fields["Contact Widget"]),
         "event_widget" => fields["Event Widget"],
+        "questions" => fields["Questions"],
+        "form_label" => fields["Form Label"],
         "color" => fields["Button Color"],
         "children" => fields["Nested Options"]
       }
@@ -138,10 +141,33 @@ defmodule AgentDesktop.AirtableConfig do
     |> Enum.into(%{})
   end
 
+  defp process_question_widgets(records) do
+    records
+    |> Enum.map(fn ~m(fields id) ->
+      {id,
+       %{
+         "name" => fields["Name"],
+         "label" => fields["Label"],
+         "type" =>
+           %{
+             "Long text" => "textarea",
+             "Short text" => "text",
+             "Radio" => "radio",
+             "Checkbox" => "checkbox"
+           }[fields["Type"]],
+         "options" => nil_safe_split(fields["Options"])
+       }}
+    end)
+    |> Enum.into(%{})
+  end
+
   def slugify(reference_name) do
     reference_name
     |> String.downcase()
     |> String.replace(" ", "-")
     |> String.replace("''", "")
   end
+
+  def nil_safe_split(nil), do: nil
+  def nil_safe_split(options), do: String.split(options, "\n") |> Enum.map(&String.trim/1)
 end

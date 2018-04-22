@@ -1,0 +1,31 @@
+<div class="form-widget" 
+  data-controller="form"
+  data-target="form.container"
+  data-form-label="<%= @form_label %>"
+  data-candidate="<%= @candidate %>"
+>
+  <br/>
+  <fieldset>
+    <legend> <%= @form_label %> </legend>
+
+    <input type="hidden" name="voter_id" value="<%= @voter[~s(account)] %>" />
+    <input type="hidden" name="first_name" value="<%= @voter[~s(first)] %>" />
+    <input type="hidden" name="last_name" value="<%= @voter[~s(last)] %>" />
+
+    <%= for q <- @questions do %>
+      <div class="input-field">
+        <label> <%= q["label"] %> </label>
+        <%= case q["type"] do %>
+          <% "text" -> %> <input type="text" name="<%= namify(q["name"]) %>" />
+          <% "textarea" -> %> <textarea name="<%= namify(q["name"]) %>" /> </textarea>
+          <% type -> %>
+            <%= for opt <- q["options"] do %>
+              <br/>
+              <input type="<%= type %>" name="<%= namify(q["name"]) %>" value="<%= opt %>" /> <%= opt %>
+            <% end %>
+        <% end %>
+      </div>
+    <% end %>
+    <button type="submit" data-action="click->form#submit" data-target="form.submitButton"> Submit </button>
+  </fieldset>
+</div>
