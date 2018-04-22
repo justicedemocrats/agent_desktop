@@ -44,8 +44,6 @@ defmodule AgentDesktop.PageController do
   end
 
   def get_live_calling_data(service_name) do
-    IO.inspect(service_name)
-
     try do
       %{body: body} =
         HTTPotion.get!(

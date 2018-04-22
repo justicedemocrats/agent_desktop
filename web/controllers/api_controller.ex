@@ -127,7 +127,6 @@ defmodule AgentDesktop.ApiController do
     data =
       Mongo.find(:mongo, "submissions", query)
       |> Enum.map(&Map.drop(&1, ~w(_id)))
-      |> IO.inspect()
 
     if params["type"] == "csv" do
       contents = convert_to_csv(data)
@@ -208,14 +207,13 @@ defmodule AgentDesktop.ApiController do
       |> MapSet.new()
       |> MapSet.difference(MapSet.new(ordered))
       |> MapSet.to_list()
-      |> IO.inspect()
 
     columns = Enum.concat(ordered, custom_columns)
 
     Enum.concat(
       [columns],
       Enum.map(normalized, fn row ->
-        Enum.map(columns, &Map.get(row, IO.inspect(&1)))
+        Enum.map(columns, &Map.get(row, &1))
       end)
     )
     |> CSV.dump_to_iodata()

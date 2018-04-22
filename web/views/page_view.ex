@@ -92,6 +92,5 @@ defmodule AgentDesktop.PageView do
     questions = AgentDesktop.AirtableConfig.get_all().questions
 
     Enum.map(question_ids, &Map.get(questions, &1))
-    |> IO.inspect()
   end
 end

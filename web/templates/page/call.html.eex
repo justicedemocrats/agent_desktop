@@ -16,6 +16,7 @@
   <div class="button-response-container">
     <%= for answer <- sorted_answers_for("top", @script.answers) do %>
       <a class="button button-xl script-answer enabled button-<%= answer[~s(color)] %>"
+        data-reference-name="<%= answer["reference_name"] %>"
         data-answer="<%= answer[~s(id)] %>">
         <%= answer["display_name"] %>
       </a>
@@ -24,8 +25,13 @@
 </div>
 
 <%= for answer <- non_top_answers(@script.answers) do %>
-  <div id="<%= answer[~s(id)] %>" style="display: none;" class="script-section">
-    <%= raw(answer_contents(@voter, answer)) %>
+  <div id="<%= answer[~s(id)] %>" style="display: none;" class="script-section" >
+    <span id="<%= answer[~s(id)] %>-source" class="refreshable-source" style="display: none;">
+      <%= raw(answer_contents(@voter, answer)) %>
+    </span>
+    <span id="<%= answer[~s(id)] %>-target" class="refreshable-target">
+      <%= raw(answer_contents(@voter, answer)) %>
+    </span>
 
     <%= if answer["contact_widget"] != nil do %>
       <div>
@@ -60,6 +66,7 @@
     <div class="button-response-container">
       <%= for answer <- sorted_answers_for(answer, @script.answers) do %>
         <a class="button button-xl script-answer button-<%= answer[~s(color)] %>"
+          data-reference-name="<%= answer["reference_name"] %>"
           data-answer="<%= answer[~s(id)] %>">
           <%= answer["display_name"] %>
         </a>
@@ -70,8 +77,18 @@
 
 <script>
 
+window.path = [];
+
 function handleButtonClick(params) {
   var id = params.overrideId || this.getAttribute('data-answer');
+
+  if (params.overrideId) {
+    window.path = [];
+  } else {
+    window.path.push(params.target.getAttribute('data-reference-name'));
+    refreshContents()
+  }
+  
   var chosen_section = document.getElementById(id);
 
   Array.from(document.querySelectorAll('.script-section')).forEach(function (section) {
@@ -100,6 +117,20 @@ function initialize () {
 function home () {
   handleButtonClick({overrideId: 'top'})
   document.getElementById('home-button').style.display = 'none';
+}
+
+function refreshContents() {
+  Array.from(document.querySelectorAll('.refreshable-target'))
+  .forEach(function (target) {
+    var answer = target.id.split('-')[0];
+    var template = document.getElementById(answer + '-source').innerHTML;
+    var html = template.replace(/\{\{.*path\[[0-9]\].*\}\}/g, function (path_expr) {
+      var index = path_expr.split('[')[1].split(']')[0];
+      return window.path[parseInt(index) - 1];
+    });
+
+    target.innerHTML = html;
+  })
 }
 
 initialize()
