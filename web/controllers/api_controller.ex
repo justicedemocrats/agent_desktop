@@ -210,7 +210,7 @@ defmodule AgentDesktop.ApiController do
         |> Map.merge(~m(timestamp))
       end)
 
-    ordered = ~w(timestamp voter_id first_name last_name)
+    ordered = ~w(voter_id timestamp first_name last_name)
 
     custom_columns =
       Enum.flat_map(normalized, &Map.keys/1)
@@ -223,7 +223,10 @@ defmodule AgentDesktop.ApiController do
     Enum.concat(
       [columns],
       Enum.map(normalized, fn row ->
-        Enum.map(columns, &Map.get(row, &1))
+        Enum.map(columns, fn
+          "voter_id" -> Map.get(row, "voter_id") |> String.split("-") |> List.last()
+          col -> Map.get(row, col)
+        end)
       end)
     )
     |> CSV.dump_to_iodata()
