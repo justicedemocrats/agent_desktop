@@ -116,15 +116,16 @@ defmodule AgentDesktop.ApiController do
 
   def get_submissions(conn, params = ~m(candidate form)) do
     time_query = extract_time_query(params)
+    candidate_query = %{"candidate" => String.downcase(candidate)}
 
     form_query =
-      case String.split(form, ",") do
+      case form |> String.downcase() |> String.split(",") do
         [single] -> %{"form" => single}
         forms when is_list(forms) -> %{"form" => %{"$in" => forms}}
       end
 
     query =
-      ~m(candidate)
+      candidate_query
       |> Map.merge(time_query)
       |> Map.merge(form_query)
 
