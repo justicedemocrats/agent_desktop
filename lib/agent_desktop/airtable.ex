@@ -94,6 +94,7 @@ defmodule AgentDesktop.AirtableConfig do
         slugify(fields["Reference Name"]),
         %{
           "use_match" => Regex.compile!(fields["Account Regular Expression"]),
+          "service_ids" => nil_safe_split(fields["Service Ids"]),
           "reference_name" => fields["Reference Name"],
           "event_slug" => fields["Event Slug"],
           "ready_html" => fields["Ready HTML"],

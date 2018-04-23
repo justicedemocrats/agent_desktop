@@ -10,7 +10,23 @@ defmodule AgentDesktop.PageController do
     render(conn, "index.html")
   end
 
-  def show(conn, params = %{"type" => "call", "voter_account" => account_id}) do
+  def show(
+        conn,
+        params = %{"type" => "call", "voter_account" => account_id, "service_id" => service_id}
+      ) do
+    script = AgentDesktop.Scripts.script_for(~m(account_id service_id))
+    voter = extract_voter(params)
+
+    conn
+    |> put_resp_cookie("last_voter_account", account_id, max_age: @cookie_minutes * 60)
+    |> put_resp_cookie("last_service_id", service_id, max_age: @cookie_minutes * 60)
+    |> render("call.html", ~m(script voter)a)
+  end
+
+  def show(
+        conn,
+        params = %{"type" => "call", "voter_account" => account_id}
+      ) do
     script = AgentDesktop.Scripts.script_for(account_id)
     voter = extract_voter(params)
 
@@ -33,7 +49,10 @@ defmodule AgentDesktop.PageController do
 
   def get_stage_htmls(conn) do
     if Map.has_key?(conn.cookies, "last_voter_account") do
-      AgentDesktop.Scripts.script_for(conn.cookies["last_voter_account"]).listing
+      AgentDesktop.Scripts.script_for(%{
+        "account_id" => conn.cookies["last_voter_account"],
+        "service_id" => conn.cookies["last_service_id"]
+      }).listing
     else
       AgentDesktop.Scripts.script_for("FALLBACK").listing
     end
