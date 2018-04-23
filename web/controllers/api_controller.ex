@@ -116,7 +116,17 @@ defmodule AgentDesktop.ApiController do
 
   def get_submissions(conn, params = ~m(candidate form)) do
     time_query = extract_time_query(params)
-    query = Map.merge(~m(candidate form), time_query)
+
+    form_query =
+      case String.split(form, ",") do
+        [single] -> %{"form" => single}
+        forms when is_list(forms) -> %{"form" => %{"$in" => forms}}
+      end
+
+    query =
+      ~m(candidate)
+      |> Map.merge(time_query)
+      |> Map.merge(form_query)
 
     ~m(from to) =
       case time_query do
@@ -202,8 +212,7 @@ defmodule AgentDesktop.ApiController do
     ordered = ~w(timestamp voter_id first_name last_name)
 
     custom_columns =
-      List.first(normalized)
-      |> Map.keys()
+      Enum.flat_map(normalized, &Map.keys/1)
       |> MapSet.new()
       |> MapSet.difference(MapSet.new(ordered))
       |> MapSet.to_list()
