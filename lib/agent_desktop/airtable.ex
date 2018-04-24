@@ -94,7 +94,7 @@ defmodule AgentDesktop.AirtableConfig do
         slugify(fields["Reference Name"]),
         %{
           "use_match" => Regex.compile!(fields["Account Regular Expression"]),
-          "service_ids" => nil_safe_split(fields["Service Ids"]),
+          "service_ids" => nil_safe_split(fields["Service Ids"], ","),
           "reference_name" => fields["Reference Name"],
           "event_slug" => fields["Event Slug"],
           "ready_html" => fields["Ready HTML"],
@@ -170,6 +170,9 @@ defmodule AgentDesktop.AirtableConfig do
     |> String.replace("''", "")
   end
 
-  def nil_safe_split(nil), do: nil
-  def nil_safe_split(options), do: String.split(options, "\n") |> Enum.map(&String.trim/1)
+  def nil_safe_split(options, delimiter \\ "\n")
+  def nil_safe_split(nil, _delimiter), do: nil
+
+  def nil_safe_split(options, delimiter),
+    do: String.split(options, delimiter) |> Enum.map(&String.trim/1)
 end
