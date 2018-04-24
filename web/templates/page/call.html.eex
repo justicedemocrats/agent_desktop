@@ -16,7 +16,11 @@
   <div class="button-response-container">
     <%= for answer <- sorted_answers_for("top", @script.answers) do %>
       <a class="button button-xl script-answer enabled button-<%= answer[~s(color)] %>"
+        <%= if answer["track_clicks"] do %>
+          data-controller="tracker" data-action="tracker#track" data-target="tracker.button" data-candidate="<%= @script.name %>"
+        <% end %>
         data-reference-name="<%= answer["reference_name"] %>"
+
         data-answer="<%= answer[~s(id)] %>">
         <%= answer["display_name"] %>
       </a>
@@ -25,7 +29,7 @@
 </div>
 
 <%= for answer <- non_top_answers(@script.answers) do %>
-  <div id="<%= answer[~s(id)] %>" style="display: none;" class="script-section" >
+  <div id="<%= answer[~s(id)] %>" style="display: none;" class="script-section">
     <span id="<%= answer[~s(id)] %>-source" class="refreshable-source" style="display: none;">
       <%= raw(answer_contents(@voter, answer)) %>
     </span>
@@ -66,6 +70,9 @@
     <div class="button-response-container">
       <%= for answer <- sorted_answers_for(answer, @script.answers) do %>
         <a class="button button-xl script-answer button-<%= answer[~s(color)] %>"
+          <%= if answer["track_clicks"] do %>
+            data-controller="tracker" data-action="tracker#track" data-target="tracker.button" data-candidate="<%= @script.name %>"
+          <% end %>
           data-reference-name="<%= answer["reference_name"] %>"
           data-answer="<%= answer[~s(id)] %>">
           <%= answer["display_name"] %>

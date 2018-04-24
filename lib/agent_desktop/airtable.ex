@@ -121,7 +121,8 @@ defmodule AgentDesktop.AirtableConfig do
         "questions" => fields["Questions"],
         "form_label" => fields["Form Label"],
         "color" => fields["Button Color"],
-        "children" => fields["Nested Options"]
+        "children" => fields["Nested Options"],
+        "track_clicks" => fields["Track Clicks"]
       }
     end)
     |> Enum.into([])

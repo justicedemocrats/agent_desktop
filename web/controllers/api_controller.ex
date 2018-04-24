@@ -114,14 +114,20 @@ defmodule AgentDesktop.ApiController do
     text(conn, "OK")
   end
 
-  def get_submissions(conn, params = ~m(candidate form)) do
+  def get_submissions(conn, params = ~m(candidate)) do
     time_query = extract_time_query(params)
     candidate_query = %{"candidate" => String.downcase(candidate)}
 
-    form_query =
-      case form |> String.downcase() |> String.split(",") do
-        [single] -> %{"form" => single}
-        forms when is_list(forms) -> %{"form" => %{"$in" => forms}}
+    {form_query, form_text} =
+      case params["form"] do
+        nil ->
+          {%{}, "all"}
+
+        _ ->
+          case params["form"] |> String.downcase() |> String.split(",") do
+            [single] -> {%{"form" => single}, params["form"]}
+            forms when is_list(forms) -> {%{"form" => %{"$in" => forms}}, Enum.join(forms, ".")}
+          end
       end
 
     query =
@@ -146,7 +152,7 @@ defmodule AgentDesktop.ApiController do
       |> put_resp_content_type("text/csv")
       |> put_resp_header(
         "content-disposition",
-        "attachment; filename=\"#{candidate}|#{form}|#{fnify_date(from)}-#{fnify_date(to)}.csv\""
+        "attachment; filename=\"#{candidate}|#{form_text}|#{fnify_date(from)}-#{fnify_date(to)}.csv\""
       )
       |> send_resp(200, contents)
     else
