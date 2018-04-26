@@ -10,7 +10,14 @@ export default class extends Controller {
     );
 
     console.log(reference_name);
-    const data = { ["Clicked: " + reference_name]: 1 };
+    const data = {
+      ["Clicked: " + reference_name]: 1,
+      phone: getVoterAttribute("phone"),
+      first: getVoterAttribute("first"),
+      last: getVoterAttribute("last"),
+      voter_id: getVoterAttribute("account")
+    };
+
     const candidate = this.buttonTarget
       .getAttribute("data-candidate")
       .toLowerCase()
@@ -25,4 +32,14 @@ export default class extends Controller {
         console.log(`[tracker]: click on ${reference_name}`);
       });
   }
+}
+
+function getVoterAttribute(attribute) {
+  attribute = "voter_" + attribute;
+  attribute = attribute.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+  var regex = new RegExp("[\\?&]" + attribute + "=([^&#]*)"),
+    results = regex.exec(location.search);
+  return results == null
+    ? undefined
+    : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
