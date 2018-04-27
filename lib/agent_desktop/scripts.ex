@@ -24,6 +24,10 @@ defmodule AgentDesktop.Scripts do
     end
   end
 
+  def script_for(~m(account_id)) when is_binary(account_id) do
+    script_for(account_id)
+  end
+
   def script_for(account_number) do
     ~m(listings scripts)a = AirtableConfig.get_all()
 
