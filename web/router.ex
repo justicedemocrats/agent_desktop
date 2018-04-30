@@ -21,6 +21,7 @@ defmodule AgentDesktop.Router do
     get("/", PageController, :index)
     get("/update", PageController, :update)
     post("/contact-widget/:widget_id", ContactWidgetController, :create)
+    get("/candidate/:candidate", PageController, :show)
     get("/:type", PageController, :show)
   end
 

@@ -47,6 +47,20 @@ defmodule AgentDesktop.PageController do
     render(conn, "notready.html", ~m(not_ready_html data)a)
   end
 
+  def show(conn, _params = ~m(candidate)) do
+    case AgentDesktop.Scripts.script_for_candidate(candidate) do
+      nil ->
+        conn
+        |> put_status(404)
+        |> text("Not found")
+
+      script ->
+        voter = %{}
+        caller = "CALLER"
+        render(conn, "call.html", ~m(script voter caller)a)
+    end
+  end
+
   def get_stage_htmls(conn) do
     if Map.has_key?(conn.cookies, "last_voter_account") do
       AgentDesktop.Scripts.script_for(%{

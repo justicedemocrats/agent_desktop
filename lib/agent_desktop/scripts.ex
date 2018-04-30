@@ -45,4 +45,29 @@ defmodule AgentDesktop.Scripts do
         nil
     end
   end
+
+  def script_for_candidate(candidate) do
+    ~m(listings scripts)a = AirtableConfig.get_all()
+
+    match =
+      Enum.filter(listings, fn {slug, _} ->
+        slugify(slug) == slugify(candidate)
+      end)
+      |> List.first()
+
+    case match do
+      {slug, listing = ~m(reference_name)} ->
+        %{answers: scripts[slug], name: reference_name, listing: listing}
+
+      nil ->
+        nil
+    end
+  end
+
+  def slugify(str),
+    do:
+      str
+      |> String.downcase()
+      |> String.replace(" ", "-", global: true)
+      |> IO.inspect()
 end
