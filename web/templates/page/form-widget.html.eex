@@ -14,10 +14,11 @@
 
     <%= for q <- @questions do %>
       <div class="input-field">
-        <label> <%= do_replacement(q["label"], @voter) %> </label>
+        <label> <%= raw(do_replacement(q["label"], @voter)) %> </label>
         <%= case q["type"] do %>
           <% "text" -> %> <input type="text" name="<%= namify(q["name"]) %>" />
           <% "textarea" -> %> <textarea name="<%= namify(q["name"]) %>" /> </textarea>
+          <% nil -> %> <span class="empty"></span>
           <% type -> %>
             <%= for opt <- q["options"] do %>
               <br/>
