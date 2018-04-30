@@ -69,5 +69,4 @@ defmodule AgentDesktop.Scripts do
       str
       |> String.downcase()
       |> String.replace(" ", "-", global: true)
-      |> IO.inspect()
 end
