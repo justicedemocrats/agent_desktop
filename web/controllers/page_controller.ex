@@ -25,14 +25,14 @@ defmodule AgentDesktop.PageController do
 
   def show(
         conn,
-        params = %{"type" => "call", "voter_account" => account_id}
+        params = %{"type" => "call", "voter_account" => account_id, "caller" => caller}
       ) do
     script = AgentDesktop.Scripts.script_for(account_id)
     voter = extract_voter(params)
 
     conn
     |> put_resp_cookie("last_voter_account", account_id, max_age: @cookie_minutes * 60)
-    |> render("call.html", ~m(script voter)a)
+    |> render("call.html", ~m(script voter caller)a)
   end
 
   def show(conn, _params = %{"type" => "ready"}) do

@@ -15,7 +15,8 @@ export default class extends Controller {
       phone: getVoterAttribute("phone"),
       first: getVoterAttribute("first"),
       last: getVoterAttribute("last"),
-      voter_id: getVoterAttribute("account")
+      voter_id: getVoterAttribute("account"),
+      caller: getUrlAttribute("caller")
     };
 
     const candidate = this.buttonTarget
@@ -36,6 +37,15 @@ export default class extends Controller {
 
 function getVoterAttribute(attribute) {
   attribute = "voter_" + attribute;
+  attribute = attribute.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+  var regex = new RegExp("[\\?&]" + attribute + "=([^&#]*)"),
+    results = regex.exec(location.search);
+  return results == null
+    ? undefined
+    : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+function getUrlAttribute(attribute) {
   attribute = attribute.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
   var regex = new RegExp("[\\?&]" + attribute + "=([^&#]*)"),
     results = regex.exec(location.search);

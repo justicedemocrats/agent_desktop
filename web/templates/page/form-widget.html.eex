@@ -11,6 +11,7 @@
     <input type="hidden" name="voter_id" value="<%= @voter[~s(account)] %>" />
     <input type="hidden" name="first_name" value="<%= @voter[~s(first)] %>" />
     <input type="hidden" name="last_name" value="<%= @voter[~s(last)] %>" />
+    <input type="hidden" name="caller" value="<%= @caller %>" />
 
     <%= for q <- @questions do %>
       <div class="input-field">
