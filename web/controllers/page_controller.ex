@@ -16,11 +16,12 @@ defmodule AgentDesktop.PageController do
       ) do
     script = AgentDesktop.Scripts.script_for(~m(account_id service_id))
     voter = extract_voter(params)
+    caller = params["caller"]
 
     conn
     |> put_resp_cookie("last_voter_account", account_id, max_age: @cookie_minutes * 60)
     |> put_resp_cookie("last_service_id", service_id, max_age: @cookie_minutes * 60)
-    |> render("call.html", ~m(script voter)a)
+    |> render("call.html", ~m(script voter caller)a)
   end
 
   def show(
