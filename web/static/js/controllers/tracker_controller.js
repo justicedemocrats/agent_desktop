@@ -4,12 +4,10 @@ export default class extends Controller {
   static targets = ["button"];
 
   track(ev) {
-    console.log(this.buttonTarget.getAttribute);
     const reference_name = this.buttonTarget.getAttribute(
       "data-reference-name"
     );
 
-    console.log(reference_name);
     const data = {
       ["Clicked: " + reference_name]: 1,
       phone: getVoterAttribute("phone"),

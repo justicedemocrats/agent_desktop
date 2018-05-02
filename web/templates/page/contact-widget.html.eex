@@ -1,10 +1,11 @@
-<fieldset id="widget-container-<%= @widget_id %>">
+<fieldset data-controller="contact"
+  data-target="contact.container" data-widget-id="<%= @widget_id %>">
   <legend> Send a follow-up message </legend>
 
-  <form id="<%= @widget_id %>">
+  <form class="contact-widget-<%= @widget_id %>" data-target="contact.form" data-action="contact#submit">
     <label> Email or text? </label>
     <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token() %>" />
-    <input type="hidden" name="original_number" value="<%= @voter[~s(phone)] %>" />
+    <input type="hidden" name="original_number" value="<%= @voter[~s(phone)] %>" data-target="contact.dataPhone" />
     <input type="hidden" name="voter_id" value="<%= @voter[~s(account)] %>" />
     <input type="hidden" name="first_name" value="<%= @voter[~s(first)] %>" />
     <input type="hidden" name="last_name" value="<%= @voter[~s(last)] %>" />
@@ -13,13 +14,19 @@
     <br/>
 
     <div class="input-field">
-      <input class="text-toggle" type="radio" name="email_or_text" value="text" checked="true" onclick="handleTextToggle(this, '<%= @widget_id %>')" /> <label> Text </label>
+      <input class="text-toggle" type="radio" name="email_or_text" value="text"
+        checked="true" data-action="click->contact#toggleText" />
 
-      <span class="is-mobile-insert"></span>
+      <label> Text </label>
+      <span class="is-mobile-insert" data-target="contact.inputInsert"></span>
       <br/>
 
-      <input class="email-toggle" type="radio" name="email_or_text" value="email" onclick="handleEmailToggle(this, '<%= @widget_id %>')" /> <label> Email </label>
-      <input class="email-input" type="email" name="email" placeholder="name@example.com" style="display: none;"/>
+      <input class="email-toggle" type="radio" name="email_or_text" value="email"
+        data-action="click->contact#toggleEmail" />
+
+      <label> Email </label>
+      <input class="email-input" type="email" name="email" placeholder="name@example.com"
+        style="display: none;" data-target="contact.emailInput" />
     </div>
 
     <br/>
@@ -33,95 +40,3 @@
   </form>
 </fieldset>
 
-<script>
-
-function handleTextToggle(el, widget_id) {
-  var keep;
-  var remove;
-
-  if (el.checked) {
-    keep = document.getElementById(widget_id).querySelector(".text-input");
-    remove = document.getElementById(widget_id).querySelector(".email-input");
-  } else {
-    remove = document.getElementById(widget_id).querySelector(".text-input");
-    keep = document.getElementById(widget_id).querySelector(".email-input");
-  }
-
-  keep.setAttribute("required", "required");
-  keep.style.display = "block";
-  document.querySelector('.input-hint').style.display = "block";
-
-  remove.removeAttribute("required");
-  remove.style.display = "none";
-}
-
-function handleEmailToggle (el, widget_id) {
-  var keep;
-  var remove;
-
-  if (!el.checked) {
-    keep = document.getElementById(widget_id).querySelector(".text-input");
-    remove = document.getElementById(widget_id).querySelector(".email-input");
-  } else {
-    remove = document.getElementById(widget_id).querySelector(".text-input");
-    keep = document.getElementById(widget_id).querySelector(".email-input");
-  }
-
-  keep.setAttribute("required", "required");
-  keep.style.display = "block";
-
-  remove.removeAttribute("required");
-  remove.style.display = "none";
-  document.querySelector('.input-hint').style.display = "none";
-}
-
-function renderIsMobile() {
-  window.superagent
-    .get('/api/lookup/<%= @voter[~s(phone)] %>')
-    .end(function (err, res) {
-      var is_mobile = err || res.body.is_moble === false;
-
-      if (is_mobile) {
-        document.getElementById("<%= @widget_id %>").querySelector('.is-mobile-insert').innerHTML =
-          '<input type="tel" style="display: none;" name="number" value="<%= @voter[~s(phone)] %>"/>';
-      } else {
-        document.getElementById("<%= @widget_id %>").querySelector('.is-mobile-insert').innerHTML =
-          '<input class="text-input" type="tel" name="number" required="true" />\
-          <p class="input-hint"> You are calling them at a landline. What is their cell phone? </p>'
-      }
-    });
-}
-
-function toObject(form) {
-  var obj = {};
-  var elements = form.querySelectorAll( "input, select, textarea" );
-  for( var i = 0; i < elements.length; ++i ) {
-    var element = elements[i];
-    var name = element.name;
-    var value = element.value;
-
-    if ( name && ( element.type !== "radio" || element.checked === true ))
-      obj[ name ] = value;
-  }
-
-  return obj;
-}
-
-
-var form = document.getElementById("<%= @widget_id %>")
-form.addEventListener('submit', function (ev) {
-  ev.preventDefault();
-  var data = toObject(ev.target)
-
-  window.superagent
-    .post('/api/send-contact/<%= @widget_id %>')
-    .send(data)
-    .end(function (err, res) {
-      var container = document.getElementById('widget-container-<%= @widget_id %>')
-      container.parentElement.innerHTML = '<h3> Message Sent </h3>';
-    })
-})
-
-renderIsMobile()
-
-</script>
