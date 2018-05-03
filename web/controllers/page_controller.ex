@@ -37,15 +37,15 @@ defmodule AgentDesktop.PageController do
   end
 
   def show(conn, _params = %{"type" => "ready"}) do
-    ~m(ready_html service_name) = get_stage_htmls(conn)
+    ~m(ready_html service_name script_include) = get_stage_htmls(conn)
     data = get_live_calling_data(service_name)
-    render(conn, "ready.html", ~m(ready_html data)a)
+    render(conn, "ready.html", ~m(ready_html data script_include)a)
   end
 
   def show(conn, _params = %{"type" => "notready"}) do
-    ~m(not_ready_html service_name) = get_stage_htmls(conn)
+    ~m(not_ready_html service_name script_include) = get_stage_htmls(conn)
     data = get_live_calling_data(service_name)
-    render(conn, "notready.html", ~m(not_ready_html data)a)
+    render(conn, "notready.html", ~m(not_ready_html data script_include)a)
   end
 
   def show(conn, _params = ~m(candidate)) do
