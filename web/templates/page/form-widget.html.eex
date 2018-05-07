@@ -28,6 +28,6 @@
         <% end %>
       </div>
     <% end %>
-    <button type="submit" data-action="click->form#submit" data-target="form.submitButton"> Submit </button>
+    <button type="submit" class="button-block" data-action="click->form#submit" data-target="form.submitButton"> Submit </button>
   </fieldset>
 </div>
