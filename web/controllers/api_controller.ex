@@ -256,12 +256,14 @@ defmodule AgentDesktop.ApiController do
         |> text("Unknown caller")
 
       username ->
+        login = String.upcase(username)
+
         case Livevox.Api.post(
                "callControl/supervisor/agent/status/ready",
-               body: %{"agents" => [username]}
+               body: %{"agents" => [login]}
              ) do
-          %{status_code: 400} -> Logger.info("Could not force #{username} ready")
-          %{status_code: 200} -> Logger.info("Successfully forced #{username} ready")
+          %{status_code: 400} -> Logger.info("Could not force #{login} ready")
+          %{status_code: 200} -> Logger.info("Successfully forced #{login} ready")
         end
 
         text(conn, "OK")
