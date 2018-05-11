@@ -2,6 +2,7 @@ defmodule AgentDesktop.ApiController do
   use AgentDesktop.Web, :controller
   alias NimbleCSV.RFC4180, as: CSV
   import ShortMaps
+  require Logger
 
   def lookup(conn, ~m(number)) do
     ~m(body)a =
@@ -243,5 +244,27 @@ defmodule AgentDesktop.ApiController do
     )
     |> CSV.dump_to_iodata()
     |> IO.iodata_to_binary()
+  end
+
+  def go_ready(conn, _) do
+    ~m(cookies)a = fetch_cookies(conn)
+
+    case cookies["last_caller"] do
+      nil ->
+        conn
+        |> put_status(400)
+        |> text("Unknown caller")
+
+      username ->
+        case Livevox.Api.post(
+               "callControl/supervisor/agent/status/ready",
+               body: %{"agents" => [username]}
+             ) do
+          %{status_code: 400} -> Logger.info("Could not force #{username} ready")
+          %{status_code: 200} -> Logger.info("Successfully forced #{username} ready")
+        end
+
+        text(conn, "OK")
+    end
   end
 end

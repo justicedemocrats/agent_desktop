@@ -10,6 +10,11 @@ defmodule AgentDesktop.Router do
     plug(AgentDesktop.IframePlug)
   end
 
+  pipeline :api do
+    plug(:accepts, ["json"])
+    plug(:fetch_session)
+  end
+
   pipeline :private do
     plug(AgentDesktop.SecretPlug)
   end
@@ -32,6 +37,7 @@ defmodule AgentDesktop.Router do
     get("/events/:candidate", ApiController, :get_events)
     post("/events/:event_id/rsvp", ApiController, :rsvp)
     post("/form", ApiController, :form_submit)
+    get("/goready", ApiController, :go_ready)
   end
 
   scope "/api", AgentDesktop do

@@ -1,4 +1,13 @@
-<div id="notready">
+<div id="container">
+  <div id="notready">
+  </div>
+  <div id="bottom-bar" data-controller="ready">
+    <%= if @go_ready_button do %>
+      <button class="button-block button-success button-xl" data-target="ready.button" data-action="ready#go">
+        Ready to connect to voters? Click here to go Ready.
+      </button>
+    <% end %>
+  </div>
 </div>
 
 <script>

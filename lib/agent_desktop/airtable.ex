@@ -101,7 +101,8 @@ defmodule AgentDesktop.AirtableConfig do
           "not_ready_html" => fields["Not Ready HTML"],
           "service_name" => fields["Service Name"],
           "events_filter" => fields["Events Filter"],
-          "script_include" => fields["Non Call Script Includes"]
+          "script_include" => fields["Non Call Script Includes"],
+          "go_ready_button" => fields["Go Ready Button?"]
         }
       }
     end)

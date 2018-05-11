@@ -61,4 +61,10 @@ config :agent_desktop,
   ],
   mongo_port: System.get_env("MONGO_PORT")
 
+config :agent_desktop,
+  lv_access_token: System.get_env("LIVEVOX_ACCESS_TOKEN"),
+  lv_clientname: System.get_env("LIVEVOX_CLIENT_NAME"),
+  lv_username: System.get_env("LIVEVOX_USERNAME"),
+  lv_password: System.get_env("LIVEVOX_PASSWORD")
+
 config :agent_desktop, secret: "secret"

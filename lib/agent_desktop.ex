@@ -8,6 +8,7 @@ defmodule AgentDesktop do
       supervisor(AgentDesktop.Endpoint, []),
       worker(AgentDesktop.AirtableConfig, []),
       worker(AgentDesktop.Scheduler, []),
+      worker(Livevox.Session, []),
       worker(Mongo, [
         [
           name: :mongo,

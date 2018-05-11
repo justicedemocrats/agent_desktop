@@ -3,6 +3,7 @@ defmodule AgentDesktop.PageController do
   import ShortMaps
 
   @cookie_minutes 10
+  @caller_cookie_minutes 60 * 8
 
   def real_secret, do: Application.get_env(:agent_desktop, :secret)
 
@@ -21,6 +22,7 @@ defmodule AgentDesktop.PageController do
     conn
     |> put_resp_cookie("last_voter_account", account_id, max_age: @cookie_minutes * 60)
     |> put_resp_cookie("last_service_id", service_id, max_age: @cookie_minutes * 60)
+    |> put_resp_cookie("last_caller", caller, max_age: @caller_cookie_minutes * 60)
     |> render("call.html", ~m(script voter caller)a)
   end
 
@@ -33,6 +35,7 @@ defmodule AgentDesktop.PageController do
 
     conn
     |> put_resp_cookie("last_voter_account", account_id, max_age: @cookie_minutes * 60)
+    |> put_resp_cookie("last_caller", params["caller"], max_age: @caller_cookie_minutes * 60)
     |> render("call.html", ~m(script voter caller)a)
   end
 
@@ -43,9 +46,9 @@ defmodule AgentDesktop.PageController do
   end
 
   def show(conn, _params = %{"type" => "notready"}) do
-    ~m(not_ready_html service_name script_include) = get_stage_htmls(conn)
+    ~m(not_ready_html service_name script_include go_ready_button) = get_stage_htmls(conn)
     data = get_live_calling_data(service_name)
-    render(conn, "notready.html", ~m(not_ready_html data script_include)a)
+    render(conn, "notready.html", ~m(not_ready_html data script_include go_ready_button)a)
   end
 
   def show(conn, _params = ~m(candidate)) do
