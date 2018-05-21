@@ -2,15 +2,6 @@ defmodule AgentDesktop.PageView do
   use AgentDesktop.Web, :view
   import ShortMaps
 
-  @defaults %{
-    "first" => "friend",
-    "last" => "",
-    "phone" => "",
-    "extra_7" => "",
-    "extra_13" => "",
-    "extra_14" => ""
-  }
-
   def top_contents(voter, answers) do
     get_top(answers)
     |> Map.get("contents", "")
@@ -52,11 +43,23 @@ defmodule AgentDesktop.PageView do
   end
 
   def do_replacement(base_contents, voter) do
-    Enum.reduce(~w(first last phone extra_7 extra_13 extra_14), base_contents, fn replacement, acc ->
-      replacement_regex = Regex.compile!("{{[^(}{})]*#{replacement}[^(}{})]*}}")
-      replacement_text = Map.get(voter, replacement, @defaults[replacement])
-      String.replace(acc, replacement_regex, replacement_text, global: true)
-    end)
+    rand_id =
+      :crypto.strong_rand_bytes(10)
+      |> Base.url_encode64()
+      |> binary_part(0, 10)
+      |> String.split("")
+      |> Enum.filter(&(Regex.run(~r/[A-Zz-z]/, &1) != nil))
+      |> Enum.join("")
+
+    ~s[
+      <div id="#{rand_id}">
+        <script>
+          var template = `#{base_contents}`;
+          var rendered = Mustache.render(template, JSON.parse('#{Poison.encode!(voter)}'));
+          document.getElementById("#{rand_id}").innerHTML = rendered;
+        </script>
+      </div>
+    ]
   end
 
   def get_top(answers) do
