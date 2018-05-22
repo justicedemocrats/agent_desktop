@@ -131,7 +131,7 @@ function refreshContents() {
   .forEach(function (target) {
     var answer = target.id.split('-')[0];
     var template = document.getElementById(answer + '-source').innerHTML;
-    var html = template.replace(/\{\{\s*path\[[0-9]\]\s*\}\}/g, function (path_expr) {
+    var html = template.replace(/<<\s*path\[[0-9]\]\s*>>/g, function (path_expr) {
       var index = path_expr.split('[')[1].split(']')[0];
       return window.path[parseInt(index) - 1];
     });
