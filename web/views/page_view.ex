@@ -52,13 +52,12 @@ defmodule AgentDesktop.PageView do
       |> Enum.join("")
 
     ~s[
-      <div id="#{rand_id}">
-        <script>
-          var template = `#{base_contents}`;
-          var rendered = Mustache.render(template, JSON.parse('#{Poison.encode!(voter)}'));
-          document.getElementById("#{rand_id}").innerHTML = rendered;
-        </script>
-      </div>
+      <div id="#{rand_id}"> </div>
+      <script>
+        var template = `#{base_contents}`;
+        var rendered = Mustache.render(template, JSON.parse('#{Poison.encode!(voter)}'));
+        document.getElementById("#{rand_id}").parentNode.innerHTML = rendered;
+      </script>
     ]
   end
 

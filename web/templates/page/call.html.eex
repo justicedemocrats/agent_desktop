@@ -133,9 +133,19 @@ function refreshContents() {
     var template = document.getElementById(answer + '-source').innerHTML;
     var html = template.replace(/<<\s*path\[[0-9]\]\s*>>/g, function (path_expr) {
       var index = path_expr.split('[')[1].split(']')[0];
-      return window.path[parseInt(index) - 1];
+      var replacement = window.path[parseInt(index) - 1];
+      return replacement;
     });
 
+    html = html.replace(/\&lt;&lt;\s*path\[[0-9]\]\s*\&gt;\&gt;/g, function (path_expr) {
+      var index = path_expr.split('[')[1].split(']')[0];
+      var replacement = window.path[parseInt(index) - 1];
+      return replacement;
+    });
+
+    if (target.id == 'recFEloRGnUnUluyZ-target') {
+      console.log(html)
+    }
     target.innerHTML = html;
   })
 }
