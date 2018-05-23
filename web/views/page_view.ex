@@ -1,6 +1,11 @@
 defmodule AgentDesktop.PageView do
   use AgentDesktop.Web, :view
-  import ShortMaps
+
+  @defaults %{
+    "first" => "First",
+    "last" => "Last",
+    "phone" => "555-555-5555"
+  }
 
   def top_contents(voter, answers) do
     get_top(answers)
@@ -51,11 +56,13 @@ defmodule AgentDesktop.PageView do
       |> Enum.filter(&(Regex.run(~r/[A-Zz-z]/, &1) != nil))
       |> Enum.join("")
 
+    data = Map.merge(@defaults, voter)
+
     ~s[
       <div id="#{rand_id}"> </div>
       <script>
         var template = `#{base_contents}`;
-        var rendered = Mustache.render(template, JSON.parse('#{Poison.encode!(voter)}'));
+        var rendered = Mustache.render(template, JSON.parse('#{Poison.encode!(data)}'));
         document.getElementById("#{rand_id}").parentNode.innerHTML = rendered;
       </script>
     ]
